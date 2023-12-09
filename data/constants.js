@@ -6,8 +6,8 @@ const allowedCors = [
   "localhost:3001",
   "http://localhost:3000",
   "https://localhost:3000",
-  "https://api.andreymazer.nomoredomainsmonster.ru",
-  "http://api.andreymazer.nomoredomainsmonster.ru",
+  "https://api.andreymazer.movies.nomoredomainsmonster.ru",
+  "http://api.andreymazer.movies.nomoredomainsmonster.ru",
 ];
 const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
 
