@@ -26,4 +26,4 @@ IP-адрес 158.160.126.132
 
 Git репозиторий https://github.com/AndreyMazer/MoviesExplorer.git
 
-Backend api.andreymazer.movies.nomoredomainsmonster.ru
+Backend https://api.andreymazer.movies.nomoredomainsmonster.ru

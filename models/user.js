@@ -1,17 +1,23 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const UnauthorizedError = require("../errors/unauthorizedError");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const UnauthorizedError = require('../errors/unauthorizedError');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    minlength: [2, "Минимальное количество символов - 2"],
-    maxlength: [30, "Максимальное количество символов - 30"],
+    minlength: [2, 'Минимальное количество символов - 2'],
+    maxlength: [30, 'Максимальное количество символов - 30'],
   },
   email: {
     type: String,
     required: true,
     unique: true,
+    validate: {
+      validator: function(v) {
+        return /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(v);
+      },
+      message: 'Некорректный формат email',
+    },
   },
   password: {
     type: String,
@@ -22,18 +28,18 @@ const userSchema = new mongoose.Schema({
 
 userSchema.statics.findUserReference = function findUser(email, password) {
   return this.findOne({ email })
-    .select("+password")
+    .select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(
-          new UnauthorizedError("Неверные email или пароль")
+          new UnauthorizedError('Неверные email или пароль'),
         );
       }
       
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(
-            new UnauthorizedError("Неверные email или пароль")
+            new UnauthorizedError('Неверные email или пароль'),
           );
         }
 
@@ -42,4 +48,4 @@ userSchema.statics.findUserReference = function findUser(email, password) {
     });
 };
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('user', userSchema);

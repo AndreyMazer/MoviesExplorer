@@ -1,23 +1,23 @@
-const router = require("express").Router();
-const { celebrate, Joi } = require("celebrate");
+const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 
-const userRouter = require("./users");
-const movieRouter = require("./movies");
-const NotFoundError = require("../errors/notFoundError");
-const { allowedCors, DEFAULT_ALLOWED_METHODS } = require("../data/constants");
-const auth = require("../middlewares/auth");
+const userRouter = require('./users');
+const movieRouter = require('./movies');
+const NotFoundError = require('../errors/notFoundError');
+const { allowedCors, DEFAULT_ALLOWED_METHODS } = require('../data/constants');
+const auth = require('../middlewares/auth');
 
-const { createUser, login } = require("../controllers/users");
+const { createUser, login } = require('../controllers/users');
 
 router.use((req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
   if (allowedCors.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-    if (method === "OPTIONS") {
-      res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
-      const requestHeaders = req.headers["access-control-request-headers"];
-      res.header("Access-Control-Allow-Headers", requestHeaders);
+    res.header('Access-Control-Allow-Origin', origin);
+    if (method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+      const requestHeaders = req.headers['access-control-request-headers'];
+      res.header('Access-Control-Allow-Headers', requestHeaders);
       return res.end();
     }
   }
@@ -25,14 +25,14 @@ router.use((req, res, next) => {
   return next();
 });
 
-router.get("/crash-test", () => {
+router.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error("Сервер сейчас упадёт");
+    throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
 
 router.post(
-  "/signup",
+  '/signup',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().email().required(),
@@ -40,23 +40,23 @@ router.post(
       name: Joi.string().min(2).max(30),
     }),
   }),
-  createUser
+  createUser,
 );
 
 router.post(
-  "/signin",
+  '/signin',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().email().required(),
       password: Joi.string().required(),
     }),
   }),
-  login
+  login,
 );
-router.use("/users", auth, userRouter);
-router.use("/movies", auth, movieRouter);
-router.use("*", auth, (req, res, next) => {
-  next(new NotFoundError("Введены некорректные данные"));
+router.use('/users', auth, userRouter);
+router.use('/movies', auth, movieRouter);
+router.use('*', auth, (req, res, next) => {
+  next(new NotFoundError('Введены некорректные данные'));
 });
 
 module.exports = router;

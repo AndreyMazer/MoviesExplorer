@@ -1,11 +1,11 @@
-const Movie = require("../models/movie");
+const Movie = require('../models/movie');
 const {
   ValidationError,
   ForbiddenError,
   NotFoundError,
   ServerError,
-} = require("../errors/errors");
-const { SUCCESSFUL_ANSWER } = require("../data/constants");
+} = require('../errors/errors');
+const { SUCCESSFUL_ANSWER } = require('../data/constants');
 
 const getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
@@ -40,10 +40,10 @@ const createMovie = (req, res, next) => {
   })
     .then((movie) => res.status(SUCCESSFUL_ANSWER).send(movie))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        return next(new ValidationError("Введены некорректные данные"));
+      if (err.name === 'ValidationError') {
+        return next(new ValidationError('Введены некорректные данные'));
       }
-      return next(new ServerError("На сервере произошла ошибка"));
+      return next(new ServerError('На сервере произошла ошибка'));
     });
 };
 
@@ -51,7 +51,7 @@ const deleteMovie = (req, res, next) => {
   Movie.findById(req.params.id)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError("Кино не найдено");
+        throw new NotFoundError('Кино не найдено');
       }
       if (movie.owner.toString() === req.user._id) {
         movie
@@ -59,15 +59,15 @@ const deleteMovie = (req, res, next) => {
           .then((movies) => res.send(movies))
           .catch(next);
       } else {
-        next(new ForbiddenError("Вы не можете удалить чужое кино"));
+        next(new ForbiddenError('Вы не можете удалить чужое кино'));
       }
     })
     .catch((err) => {
-      if (err.message === "NotFoundError") {
-        return next(new NotFoundError("Кино не найдено"));
+      if (err.message === 'NotFoundError') {
+        return next(new NotFoundError('Кино не найдено'));
       }
-      if (err.name === "CastError") {
-        return next(new ValidationError("Введены некорректные данные"));
+      if (err.name === 'CastError') {
+        return next(new ValidationError('Введены некорректные данные'));
       }
       return next(err);
     });
