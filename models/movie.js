@@ -26,9 +26,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле обязательно к заполнению'],
     validate: {
-      validator: (v) => { 
-        return validator.isURL(v);
-      },
+      validator: (v) => validator.isURL(v),
       message: 'Неверный формат URL',
     },
   },
@@ -36,9 +34,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле обязательно к заполнению'],
     validate: {
-      validator: (v) => { 
-        return validator.isURL(v);
-      },
+      validator: (v) => validator.isURL(v),
       message: 'Неверный формат URL',
     },
   },
@@ -46,9 +42,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле обязательно к заполнению'],
     validate: {
-      validator: (v) => { 
-        return validator.isURL(v);
-      },
+      validator: (v) => validator.isURL(v),
       message: 'Неверный формат URL',
     },
   },

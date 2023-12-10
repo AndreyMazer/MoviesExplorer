@@ -19,7 +19,7 @@ const getUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       } else {
-        next(res.send(user));
+        res.send(user);
       }
     })
     .catch((err) => {
@@ -37,12 +37,9 @@ const createUser = (req, res, next) => {
   const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) =>User.create({
-        name,
-        email,
-        password: hash,
-      }),
-    )
+    .then((hash) => User.create({
+      name, email, password: hash,
+    }))
     .then(() => {
       res.status(SUCCESSFUL_ANSWER).send({
         name,

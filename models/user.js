@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: function(v) {
-        return /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(v);
+      validator: function validator(v) {
+        return /\bA-Z0-9._%+-+@A-Z0-9.-+\.A-Z{2,}\b/i.test(v);
       },
       message: 'Некорректный формат email',
     },
@@ -35,7 +35,6 @@ userSchema.statics.findUserReference = function findUser(email, password) {
           new UnauthorizedError('Неверные email или пароль'),
         );
       }
-      
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(
