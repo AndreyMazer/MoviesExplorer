@@ -27,14 +27,10 @@ router.post(
   }),
   createMovie,
 );
-router.delete(
-  '/:id',
-  celebrate({
-    params: Joi.object().keys({
-      id: Joi.string().length(24).hex().required(),
-    }),
+router.delete('/:movieId', celebrate({
+  params: Joi.object().keys({
+    movieId: Joi.string().length(24).hex().required(),
   }),
-  deleteMovie,
-);
+}), deleteMovie);
 
 module.exports = router;
