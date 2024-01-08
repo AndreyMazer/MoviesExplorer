@@ -24,8 +24,9 @@ const createMovie = (req, res, next) => {
     trailerLink,
     nameRU,
     nameEN,
+    thumbnail, 
+    movieId,
   } = req.body;
-  const owner = req.user._id;
   Movie.create({
     country,
     director,
@@ -36,7 +37,9 @@ const createMovie = (req, res, next) => {
     trailerLink,
     nameRU,
     nameEN,
-    owner,
+    thumbnail,
+    movieId,
+    owner: req.user._id,
   })
     .then((movie) => res.status(SUCCESSFUL_ANSWER).send(movie))
     .catch((err) => {
@@ -48,7 +51,7 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.id)
+  Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Кино не найдено');

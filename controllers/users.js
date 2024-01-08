@@ -14,12 +14,12 @@ const { SUCCESSFUL_ANSWER } = require('../data/constants');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUser = (req, res, next) => {
-  User.findById(req.params.userId)
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       } else {
-        res.send(user);
+        next(res.send(user));
       }
     })
     .catch((err) => {
@@ -48,9 +48,7 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        return next(
-          new ConflictError('Пользователь с данным email уже существует'),
-        );
+        return next(new ConflictError('Пользователь с данным email уже существует'));
       }
       if (err.name === 'ValidationError') {
         return next(new ValidationError('Введены некорректные данные'));
