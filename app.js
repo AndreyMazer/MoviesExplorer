@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(DB_URL);
 
-app.use(router);
 app.use(errors());
+app.use(router);
 app.use(errLog);
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
