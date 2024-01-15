@@ -11,20 +11,21 @@ const app = express();
 app.use(express.json());
 app.use(reqLog);
 
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(DB_URL);
 
-app.use(errors());
 app.use(router);
+app.use(errors());
 app.use(errLog);
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
-  res.status(statusCode).send({
+  res.status(err.statusCode).send({
     message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
   });
-
+  return next();
 });
 
 app.listen(PORT, () => {
